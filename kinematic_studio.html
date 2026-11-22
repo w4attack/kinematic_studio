@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KINETIC // Typography Canvas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-kinetic: #080808;
+            --surface-kinetic: #121212;
+            --text-main: #ffffff;
+            --text-muted: #666666;
+            --accent-silver: #a0a0a0;
+            --border-kinetic: #1f1f1f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            background-color: var(--bg-kinetic);
+            color: var(--text-main);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-kinetic);
+            padding-bottom: 1.5rem;
+            width: 100%;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            color: var(--text-main);
+        }
+
+        main {
+            margin: 4rem 0;
+            width: 100%;
+        }
+
+        .kinetic-hero {
+            position: relative;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-kinetic);
+        }
+
+        .kinetic-title {
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1.05;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            transition: transform 0.2s ease-out, letter-spacing 0.3s ease;
+            cursor: default;
+        }
+
+        .kinetic-title:hover {
+            letter-spacing: 2px;
+            color: var(--accent-silver);
+        }
+
+        .kinetic-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+            max-width: 550px;
+            margin-top: 2rem;
+            font-weight: 300;
+        }
+
+        .canvas-playground {
+            margin-top: 3rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .playground-card {
+            background-color: var(--surface-kinetic);
+            border: 1px solid var(--border-kinetic);
+            padding: 2rem;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .playground-card:hover {
+            border-color: var(--text-main);
+            transform: translateY(-4px);
+        }
+
+        .card-index {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .card-heading {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .card-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-kinetic);
+            padding-top: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            width: 100%;
+        }
+
+        .watermark {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .watermark:hover {
+            color: var(--text-main);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--surface-kinetic);
+            border: 1px solid var(--text-main);
+            color: var(--text-main);
+            padding: 1rem 1.5rem;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(150%);
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 100;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 900px) {
+            .kinetic-title {
+                font-size: 2.8rem;
+            }
+            .canvas-playground {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">KINETIC // Studio</div>
+        <nav class="nav-links">
+            <button class="nav-btn active" onclick="showToast('Активный холст типографики')">Холст</button>
+            <button class="nav-btn" onclick="showToast('Загрузка векторных шейдеров...')">Векторы</button>
+            <button class="nav-btn" onclick="showToast('Открытие спецификации анимаций')">Спецификация</button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="kinetic-hero">
+            <h1 class="kinetic-title" title="Наведи курсор">Кинетическая типографика</h1>
+            <p class="kinetic-desc">Экспериментальный интерфейс, где шрифт адаптируется к скорости взаимодействия пользователя, создавая гипнотический визуальный ритм без перегруза интерфейса лишней графикой.</p>
+        </div>
+
+        <div class="canvas-playground">
+            <div class="playground-card" onclick="showToast('Выбран модуль: Elastic Tracking')">
+                <div class="card-index">01 // PARAM</div>
+                <div class="card-heading">Elastic Tracking</div>
+                <div class="card-text">Динамическое изменение межбуквенного расстояния при наведении.</div>
+            </div>
+            <div class="playground-card" onclick="showToast('Выбран модуль: Variable Weight')">
+                <div class="card-index">02 // PARAM</div>
+                <div class="card-heading">Variable Weight</div>
+                <div class="card-text">Плавная деформация толщины штрихов через оси шрифта.</div>
+            </div>
+            <div class="playground-card" onclick="showToast('Выбран модуль: Fluid Flow')">
+                <div class="card-index">03 // PARAM</div>
+                <div class="card-heading">Fluid Flow</div>
+                <div class="card-text">Смещение текстовых блоков в ритме движения курсора.</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div>w3bAttacking Studio // Eksperimental Lab</div>
+        <a href="https://w4attack.github.io/port/" target="_blank" class="watermark">w3bAttacking © 2026 // wA Studio</a>
+    </footer>
+
+    <div id="toast" class="toast">Параметр применен</div>
+
+    <script>
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            toast.textContent = text;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+
+</body>
+</html>
